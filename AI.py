@@ -1,10 +1,11 @@
 import random
 from string import ascii_lowercase
+import time
 
+def mineAI(currgrid, size, fail):
 
-def mineAI(currgrid, size):
-
-    #input()
+    #Program pause before running, so that it won't finish in 0 secs.
+    time.sleep(1 / random.randrange(5, 10))
 
     #Create an empty Board
     board = []
@@ -26,7 +27,7 @@ def mineAI(currgrid, size):
                 S_open += 1
 
     if(S_open == 0): #If all blocks are closed open the first one
-        return 'a1'
+        return '{}{}'.format(ascii_lowercase[random.randrange(size)],random.randrange(1, size+1))
     else:
         while True:
             #For every block try to solve it
@@ -35,20 +36,31 @@ def mineAI(currgrid, size):
                     if(board[i][j] != ' ') and (board[i][j] != 'F') and (board[i][j] != '0'):
 
                         #Check all neighbors
-                        print("Check in i: ", i, " j: ", j)
                         hidden_neighbors = check_neighbors(board, i, j, size)
                         flagged_neighbors = check_flags(board, i, j, size)
                         bombs = hidden_neighbors + flagged_neighbors
 
                         if hidden_neighbors > 0:
-                            #Open safe closed
-                            if(flagged_neighbors == int(board[i][j])):
-                                return open_neighbors(board, i, j, size)
+
                             #Flagging
-                            elif bombs == int(board[i][j]):
+                            if bombs == int(board[i][j]):
                                 return flag_neighbors(board, i, j, size)
-                            else:
-                                print("Nothing to do in i: ", i, "j: ", j)
+
+                            #Open safe closed
+                            elif(flagged_neighbors == int(board[i][j])):
+                                return open_neighbors(board, i, j, size)
+
+                            elif fail == 1:
+                                for x in range(i-1,i+2):
+                                    for y in range(j-1, j+2):
+                                        try:
+                                            if((x >= 0) and (x <= size) and (y >= 0) and (y <= size)):
+                                                if board[x][y] == " ":
+                                                    return ('{}{}'.format(ascii_lowercase[y],x+1))
+                                        except:
+                                            break
+                            #else:
+                                #print("Nothing to do in: ", i, " ", j)
             return "You suck at coding 1"
 
 

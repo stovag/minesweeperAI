@@ -4,6 +4,8 @@ import time
 from string import ascii_lowercase
 from AI import mineAI
 
+fail = 0
+
 def setupgrid(gridsize, start, numberofmines):
     emptygrid = [['0' for i in range(gridsize)] for i in range(gridsize)]
 
@@ -118,6 +120,7 @@ def parseinput(inputstring, gridsize, helpmessage):
     cell = ()
     flag = False
     message = "Invalid cell. " + helpmessage
+    global fail
 
     pattern = r'([a-{}])([0-9]+)(f?)'.format(ascii_lowercase[gridsize - 1])
     validinput = re.match(pattern, inputstring)
@@ -125,7 +128,11 @@ def parseinput(inputstring, gridsize, helpmessage):
     if inputstring == 'help':
         message = helpmessage
 
+    elif inputstring == 'You suck at coding 1':
+        fail = 1
+
     elif validinput:
+        fail = 0
         rowno = int(validinput.group(2)) - 1
         colno = ascii_lowercase.index(validinput.group(1))
         flag = bool(validinput.group(3))
@@ -155,7 +162,7 @@ def playgame():
 
     while True:
         minesleft = numberofmines - len(flags)
-        prompt = str(mineAI(currgrid, gridsize)) #AI answers
+        prompt = str(mineAI(currgrid, gridsize, fail)) #AI answers
         print(prompt)
         result = parseinput(prompt, gridsize, helpmessage + '\n')
 
