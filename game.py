@@ -166,12 +166,12 @@ def playgame():
     while True:
         minesleft = numberofmines - len(flags)
         prompt = str(mineAI(currgrid, gridsize, fail, open)) #AI answers
-        open = True
         print(prompt)
         result = parseinput(prompt, gridsize, helpmessage + '\n')
 
         message = result['message']
         cell = result['cell']
+        open = True
 
         if cell:
             print('\n\n')
