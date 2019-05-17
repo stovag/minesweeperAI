@@ -2,7 +2,7 @@ import random
 from string import ascii_lowercase
 import time
 
-def mineAI(currgrid, size, fail):
+def mineAI(currgrid, size, fail, open):
 
     #Program pause before running, so that it won't finish in 0 secs.
     time.sleep(1 / random.randrange(5, 10))
@@ -20,14 +20,9 @@ def mineAI(currgrid, size, fail):
             board[i][j] = str(currgrid[i][j])
 
     #Check if there are open blocks
-    S_open = 0
-    for i in range(size):
-        for j in range(size):
-            if(board[i][j] != ' '):
-                S_open += 1
 
-    if(S_open == 0): #If all blocks are closed open the first one
-        return '{}{}'.format(ascii_lowercase[random.randrange(size)],random.randrange(1, size+1))
+    if(open == False): #If all blocks are closed open the first one
+        return '{}{}'.format(ascii_lowercase[0],1)
     else:
         while True:
             #For every block try to solve it
@@ -53,15 +48,11 @@ def mineAI(currgrid, size, fail):
                             elif fail == 1:
                                 for x in range(i-1,i+2):
                                     for y in range(j-1, j+2):
-                                        try:
-                                            if((x >= 0) and (x <= size) and (y >= 0) and (y <= size)):
-                                                if board[x][y] == " ":
-                                                    return ('{}{}'.format(ascii_lowercase[y],x+1))
-                                        except:
-                                            break
-                            #else:
-                                #print("Nothing to do in: ", i, " ", j)
-            return "You suck at coding 1"
+                                        if((x >= 0) and (x < size) and (y >= 0) and (y < size)):
+                                            if board[x][y] == " ":
+                                                return ('{}{}'.format(ascii_lowercase[y],x+1))
+
+            return "I can't return anything"
 
 
 #Check for every neighbor if they're blank
@@ -102,7 +93,7 @@ def flag_neighbors(board,i,j,size):
                         return ('{}{}f'.format(ascii_lowercase[y],x+1))
             except:
                 break
-    return "You suck at coding 2"
+    return "I can't flag anything."
 
 
 #Open safe closed
@@ -115,4 +106,4 @@ def open_neighbors(board, i, j, size):
                         return ('{}{}'.format(ascii_lowercase[y],x+1))
             except:
                 break
-    return "You suck at coding 3"
+    return "I can't open anything."

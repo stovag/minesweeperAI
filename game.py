@@ -5,6 +5,7 @@ from string import ascii_lowercase
 from AI import mineAI
 
 fail = 0
+open = False
 
 def setupgrid(gridsize, start, numberofmines):
     emptygrid = [['0' for i in range(gridsize)] for i in range(gridsize)]
@@ -128,7 +129,7 @@ def parseinput(inputstring, gridsize, helpmessage):
     if inputstring == 'help':
         message = helpmessage
 
-    elif inputstring == 'You suck at coding 1':
+    elif inputstring == "I can't return anything":
         fail = 1
 
     elif validinput:
@@ -145,6 +146,8 @@ def parseinput(inputstring, gridsize, helpmessage):
 
 
 def playgame():
+    global open
+
     gridsize = int(input("Please enter the size for the minesweeper\n"))
     numberofmines = int(input("Please enter the number of bombs\n"))
 
@@ -162,7 +165,8 @@ def playgame():
 
     while True:
         minesleft = numberofmines - len(flags)
-        prompt = str(mineAI(currgrid, gridsize, fail)) #AI answers
+        prompt = str(mineAI(currgrid, gridsize, fail, open)) #AI answers
+        open = True
         print(prompt)
         result = parseinput(prompt, gridsize, helpmessage + '\n')
 
